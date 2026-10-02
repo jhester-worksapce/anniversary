@@ -207,8 +207,16 @@ body:has(#cover-scene:not([hidden])) .closing { margin-top: 18px; }
 .anniversary-finale h2 { font-size: clamp(38px, 6vw, 70px); font-weight: normal; letter-spacing: -2px; margin: 18px 0; }
 .anniversary-finale h2 em { color: #a14e68; }
 .anniversary-finale > p:not(.eyebrow):not(.signature) { color: #81645e; line-height: 1.8; }
-.bouquet { display: block; width: min(100%, 480px); height: auto; margin: -10px auto -25px; animation: bouquet-reveal 1.4s ease-out both; }
-@keyframes bouquet-reveal { from { opacity: 0; transform: translateY(40px) rotate(-6deg); } to { opacity: 1; transform: translateY(0) rotate(0); } }
+.bouquet { display: block; width: min(100%, 480px); height: auto; margin: -10px auto -25px; }
+.anniversary-finale:not([hidden]) .bouquet { transform-origin: 50% 88%; animation: bouquet-bloom 1.45s cubic-bezier(.2,.8,.2,1) both; }
+.anniversary-finale:not([hidden]) .bouquet [href="#bloom"],
+.anniversary-finale:not([hidden]) .bouquet [href="#darkbloom"],
+.anniversary-finale:not([hidden]) .bouquet [href="#daisy"] { transform-box: fill-box; transform-origin: center; animation: petals-open .7s cubic-bezier(.2,.8,.2,1) both; }
+.anniversary-finale:not([hidden]) .bouquet [href="#bloom"] { animation-delay: .28s; }
+.anniversary-finale:not([hidden]) .bouquet [href="#darkbloom"] { animation-delay: .46s; }
+.anniversary-finale:not([hidden]) .bouquet [href="#daisy"] { animation-delay: .64s; }
+@keyframes bouquet-bloom { 0% { opacity: 0; transform: translateY(32px) scale(.76) rotate(-7deg); filter: saturate(.78) blur(1px); } 68% { opacity: 1; transform: translateY(-3px) scale(1.035) rotate(1deg); filter: none; } 100% { opacity: 1; transform: translateY(0) scale(1) rotate(0); filter: none; } }
+@keyframes petals-open { 0% { opacity: 0; scale: .12; } 72% { opacity: 1; scale: 1.12; } 100% { opacity: 1; scale: 1; } }
 .finale-letter { font-style: italic; font-size: 18px; }
 .finale-actions { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-top: 27px; }
 .finale-actions button { border: 1px solid #d1afa9; color: #89475c; background: #fffaf1; padding: 12px 20px; border-radius: 30px; font-size: 13px; }
