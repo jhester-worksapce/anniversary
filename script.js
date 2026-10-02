@@ -76,12 +76,65 @@ let current = 0;
 let turning = false;
 let opened = false;
 const finale = document.getElementById('anniversary-finale');
+function animateBouquet() {
+  const bouquet = finale.querySelector('.bouquet');
+  bouquet.getAnimations({ subtree: true }).forEach(animation => animation.cancel());
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  bouquet.animate([
+    { opacity: 0, transform: 'translateY(34px) scale(.76) rotate(-7deg)' },
+    { opacity: 1, transform: 'translateY(-3px) scale(1.035) rotate(1deg)', offset: .72 },
+    { opacity: 1, transform: 'translateY(0) scale(1) rotate(0)' }
+  ], { duration: 1500, easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'both' });
+
+  const stems = bouquet.querySelector('g[stroke="#68836c"]');
+  stems.style.transformBox = 'fill-box';
+  stems.style.transformOrigin = '50% 100%';
+  stems.animate([
+    { opacity: 0, transform: 'scaleY(.08)' },
+    { opacity: 1, transform: 'scaleY(1)' }
+  ], { duration: 950, delay: 160, easing: 'cubic-bezier(.22,.7,.25,1)', fill: 'both' });
+
+  const wrapper = bouquet.querySelector('path[fill="url(#wrap)"]');
+  wrapper.style.transformBox = 'fill-box';
+  wrapper.style.transformOrigin = '50% 100%';
+  wrapper.animate([
+    { opacity: 0, transform: 'scaleY(.72)' },
+    { opacity: 1, transform: 'scaleY(1)' }
+  ], { duration: 800, delay: 380, easing: 'ease-out', fill: 'both' });
+
+  bouquet.querySelectorAll('use[href="#leaf"]').forEach((leaf, index) => {
+    leaf.style.transformBox = 'fill-box';
+    leaf.style.transformOrigin = 'center';
+    leaf.animate([
+      { opacity: 0, scale: .16 },
+      { opacity: 1, scale: 1.08, offset: .76 },
+      { opacity: 1, scale: 1 }
+    ], { duration: 680, delay: 520 + index * 42, easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'both' });
+  });
+
+  bouquet.querySelectorAll('use[href="#bloom"], use[href="#darkbloom"], use[href="#daisy"]').forEach((flower, index) => {
+    flower.style.transformBox = 'fill-box';
+    flower.style.transformOrigin = 'center';
+    flower.animate([
+      { opacity: 0, scale: .08 },
+      { opacity: 1, scale: 1.12, offset: .74 },
+      { opacity: 1, scale: 1 }
+    ], { duration: 760, delay: 850 + index * 92, easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'both' });
+  });
+
+  bouquet.animate(
+    [{ rotate: '-.7deg' }, { rotate: '.7deg' }],
+    { duration: 2600, delay: 1750, iterations: Infinity, direction: 'alternate', easing: 'ease-in-out' }
+  );
+}
 function showFinale() {
   if (turning) return;
   opened = false;
   openScene.hidden = true;
   coverScene.hidden = true;
   finale.hidden = false;
+  animateBouquet();
   status.textContent = 'Happy Anniversary, my love! A bouquet, just for you.';
   document.getElementById('finale-title').focus({preventScroll:true});
   finale.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth',block:'start'});
